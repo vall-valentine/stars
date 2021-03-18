@@ -20,12 +20,12 @@ class Users(SqlAlchemyBase, UserMixin, SerializerMixin):
     role_id = sqlalchemy.Column(sqlalchemy.Integer,
                                 sqlalchemy.ForeignKey("roles.id"))
 
-    roles = orm.relation('Role')
+    roles = orm.relation('Roles')
 
     teachergroups = orm.relation("TeacherGroups", back_populates='teachers')
-    groupstudents = orm.relation("GroupsStudents", back_populates='students')
+    groupstudents = orm.relation("GroupStudents", back_populates='students')
     testresults = orm.relation("TestResults", back_populates='students')
-    tests = orm.relation("Tests", back_populates='tests')
+    tests = orm.relation("Tests", back_populates='teachers')
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)
@@ -83,7 +83,7 @@ class GroupStudents(SqlAlchemyBase, UserMixin, SerializerMixin):
     groups = orm.relation('Groups')
 
 
-class Test(SqlAlchemyBase, UserMixin, SerializerMixin):
+class Tests(SqlAlchemyBase, UserMixin, SerializerMixin):
     __tablename__ = 'tests'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,

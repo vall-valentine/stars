@@ -2,12 +2,12 @@ from flask import jsonify
 from flask_restful import reqparse, abort, Resource
 
 from data import db_session
-from data.__all_models import Users as User
-from data.__all_models import Roles as Role
-from data.__all_models import Groups as Group
+from data.__all_models import Users
+from data.__all_models import Roles
+from data.__all_models import Groups
 from data.__all_models import TeacherGroups
 from data.__all_models import GroupStudents
-from data.__all_models import Test
+from data.__all_models import Tests
 from data.__all_models import Questions as Question
 from data.__all_models import TestQuestions
 from data.__all_models import TestResults
@@ -15,14 +15,14 @@ from data.__all_models import TestResults
 
 def abort_if_user_not_found(user_id):
     session = db_session.create_session()
-    user = session.query(User).get(user_id)
+    user = session.query(Users).get(user_id)
     if not user:
         abort(404, message=f"User {user_id} not found")
 
 
 def abort_if_login_not_unique(login):
     session = db_session.create_session()
-    user = session.query(User).filter(User.login == login).first()
+    user = session.query(Users).filter(Users.login == login).first()
     if user:
         abort(400, message=f"User with nickname '{login}' already exists")
 
@@ -31,14 +31,14 @@ class UsersResource(Resource):
     def get(self, user_id):
         abort_if_user_not_found(user_id)
         session = db_session.create_session()
-        user = session.query(User).get(user_id)
+        user = session.query(Users).get(user_id)
         return jsonify({'user': user.to_dict(
-            only=('id', 'login', 'surname', 'role_id'))})
+            only=('id', 'login', 'surname', 'role_id', 'name'))})
 
     def delete(self, user_id):
         abort_if_user_not_found(user_id)
         session = db_session.create_session()
-        user = session.query(User).get(user_id)
+        user = session.query(Users).get(user_id)
         session.delete(user)
         session.commit()
         return jsonify({'success': 'OK'})
@@ -54,7 +54,7 @@ class UsersResource(Resource):
         args = parser.parse_args()
 
         session = db_session.create_session()
-        user = session.query(User).get(user_id)
+        user = session.query(Users).get(user_id)
 
         abort_if_login_not_unique(args['login'])
         if args['login']:
@@ -75,7 +75,7 @@ class UsersResource(Resource):
 class UsersListResource(Resource):
     def get(self):
         session = db_session.create_session()
-        users = session.query(User).all()
+        users = session.query(Users).all()
         return jsonify({'roles': [item.to_dict(
             only=('id', 'login', 'surname', 'role_id')) for item in users]})
 
@@ -91,7 +91,7 @@ class UsersListResource(Resource):
         abort_if_login_not_unique(args['login'])
 
         session = db_session.create_session()
-        user = User(
+        user = Users(
             login=args['login'],
             surname=args['surname'],
             name=args['name'],
@@ -105,7 +105,7 @@ class UsersListResource(Resource):
 
 def abort_if_role_not_found(role_id):
     session = db_session.create_session()
-    role = session.query(Role).get(role_id)
+    role = session.query(Roles).get(role_id)
     if not role:
         abort(404, message=f"Role {role_id} not found")
 
@@ -114,7 +114,7 @@ class RolesResource(Resource):
     def get(self, role_id):
         abort_if_user_not_found(role_id)
         session = db_session.create_session()
-        role = session.query(Role).get(role_id)
+        role = session.query(Roles).get(role_id)
         return jsonify({'role': role.to_dict(
             only=('name', 'can_view_teachers', 'can_view_tests',
                   'can_add_users', 'can_add_tests', 'can_complete_tests'))})
@@ -122,7 +122,7 @@ class RolesResource(Resource):
     def delete(self, role_id):
         abort_if_role_not_found(role_id)
         session = db_session.create_session()
-        role = session.query(Role).get(role_id)
+        role = session.query(Roles).get(role_id)
         session.delete(role)
         session.commit()
         return jsonify({'success': 'OK'})
@@ -140,7 +140,7 @@ class RolesResource(Resource):
         args = parser.parse_args()
 
         session = db_session.create_session()
-        role = session.query(Role).get(role_id)
+        role = session.query(Roles).get(role_id)
 
         if args['name']:
             role.login = args['name']
@@ -162,7 +162,7 @@ class RolesResource(Resource):
 class RolesListResource(Resource):
     def get(self):
         session = db_session.create_session()
-        roles = session.query(Role).all()
+        roles = session.query(Roles).all()
         return jsonify({'roles': [item.to_dict(
             only=('name', 'can_view_teachers', 'can_view_tests',
                   'can_add_users', 'can_add_tests',
@@ -171,15 +171,15 @@ class RolesListResource(Resource):
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('name', required=True)
-        parser.add_argument('can_view_teachers', required=False)
-        parser.add_argument('can_view_tests', required=False)
-        parser.add_argument('can_add_users', required=False)
-        parser.add_argument('can_add_tests', required=True)
-        parser.add_argument('can_complete_tests', required=True)
+        parser.add_argument('can_view_teachers', required=False, type=bool)
+        parser.add_argument('can_view_tests', required=False, type=bool)
+        parser.add_argument('can_add_users', required=False, type=bool)
+        parser.add_argument('can_add_tests', required=True, type=bool)
+        parser.add_argument('can_complete_tests', required=True, type=bool)
         args = parser.parse_args()
 
         session = db_session.create_session()
-        role = Role(
+        role = Roles(
             name=args['name'],
             can_view_teachers=args['can_view_teachers'],
             can_view_tests=args['can_view_tests'],
@@ -194,7 +194,7 @@ class RolesListResource(Resource):
 
 def abort_if_group_not_found(group_id):
     session = db_session.create_session()
-    group = session.query(Group).get(group_id)
+    group = session.query(Groups).get(group_id)
     if not group:
         abort(404, message=f"Group {group_id} not found")
 
@@ -203,14 +203,14 @@ class GroupsResource(Resource):
     def get(self, group_id):
         abort_if_group_not_found(group_id)
         session = db_session.create_session()
-        group = session.query(Group).get(group_id)
+        group = session.query(Groups).get(group_id)
         return jsonify({'group': group.to_dict(
             only=('name'))})
 
     def delete(self, group_id):
         abort_if_group_not_found(group_id)
         session = db_session.create_session()
-        group = session.query(Group).get(group_id)
+        group = session.query(Groups).get(group_id)
         session.delete(group)
         session.commit()
         return jsonify({'success': 'OK'})
@@ -223,7 +223,7 @@ class GroupsResource(Resource):
         args = parser.parse_args()
 
         session = db_session.create_session()
-        group = session.query(Group).get(group_id)
+        group = session.query(Groups).get(group_id)
 
         if args['name']:
             group.login = args['name']
@@ -235,7 +235,7 @@ class GroupsResource(Resource):
 class GroupsListResource(Resource):
     def get(self):
         session = db_session.create_session()
-        roles = session.query(Group).all()
+        roles = session.query(Groups).all()
         return jsonify({'groups': [item.to_dict(
             only=('name')) for item in roles]})
 
@@ -245,7 +245,7 @@ class GroupsListResource(Resource):
         args = parser.parse_args()
 
         session = db_session.create_session()
-        role = Group(
+        role = Groups(
             name=args['name']
         )
         session.add(role)
@@ -387,7 +387,7 @@ class GroupStudentsListResource(Resource):
 
 def abort_if_test_not_found(test_id):
     session = db_session.create_session()
-    test = session.query(Test).get(test_id)
+    test = session.query(Tests).get(test_id)
     if not test:
         abort(404, message=f"Test {test_id} not found")
 
@@ -396,14 +396,14 @@ class TestResource(Resource):
     def get(self, test_id):
         abort_if_test_not_found(test_id)
         session = db_session.create_session()
-        test = session.query(Test).get(test_id)
+        test = session.query(Tests).get(test_id)
         return jsonify({'tests': test.to_dict(
             only=('teacher_id', 'group_id', 'start_date'))})
 
     def delete(self, test_id):
         abort_if_test_not_found(test_id)
         session = db_session.create_session()
-        test = session.query(Test).get(test_id)
+        test = session.query(Tests).get(test_id)
         session.delete(test)
         session.commit()
         return jsonify({'success': 'OK'})
@@ -418,7 +418,7 @@ class TestResource(Resource):
         args = parser.parse_args()
 
         session = db_session.create_session()
-        test = session.query(Test).get(test_id)
+        test = session.query(Tests).get(test_id)
 
         if args['teacher_id']:
             test.login = args['teacher_id']
@@ -432,7 +432,7 @@ class TestResource(Resource):
 class TestListResource(Resource):
     def get(self):
         session = db_session.create_session()
-        test = session.query(Test).all()
+        test = session.query(Tests).all()
         return jsonify({'tests': [item.to_dict(
             only=('teacher_id', 'group_id', 'start_date')) for item in test]})
 
@@ -444,7 +444,7 @@ class TestListResource(Resource):
         args = parser.parse_args()
 
         session = db_session.create_session()
-        tests = Test(
+        tests = Tests(
             group_id=args['group_id'],
             teacher_id=args['teacher_id'],
             start_date=args['start_date']
