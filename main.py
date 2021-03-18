@@ -109,7 +109,6 @@ def unauthorized():
 
 # страница ученика
 @app.route('/student', methods=['GET'])
-@roles_required('Student')
 def start_student():
     return render_template('student.html')
 
@@ -181,8 +180,29 @@ def system_admin_new_group():
 
 
 # регистрация нового пользователя системным администратором
-@app.route('/system_admin/new_user', methods=['GET'])
+@app.route('/system_admin/new_user', methods=['GET', 'POST'])
 def system_admin_new_user():
+    form_reg = UserRegisterForm()
+
+    if form_reg.validate_on_submit():
+        db_session.global_init("db/database.sqlite")
+        session = db_session.create_session()
+
+        if session.query(Users).filter(Users.login ==
+                                       form_reg.login.data).first():
+            return render_template('system_admin_newuser.html',
+                                   form_reg=form_reg)
+
+        if form_reg.role_id.data == 1:
+            role_id = 1
+        post('http://127.0.0.1:8080/api/users', json={
+            'login': form_reg.login.data,
+            'password': form_reg.password.data,
+            'name': form_reg.name.data,
+            'surname': form_reg.surname.data,
+            'role_id': role_id
+        })
+        return redirect('/logout')
     return render_template('system_admin_newuser.html')
 
 
