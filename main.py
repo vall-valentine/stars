@@ -16,6 +16,7 @@ from flask_user import roles_required
 from conf.routes import generate_routes
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'solnyshki_vperyod'
 
 login_manager = LoginManager(app)
 login_manager.init_app(app)
@@ -32,10 +33,18 @@ def load_user(user_id):
 
 
 # страница входа
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect('/feed')
+        if current_user.role_id == 1:
+            return render_template('system_admin.html')
+        if current_user.role_id == 2:
+            return render_template('ed_process_admin.html')
+        if current_user.role_id == 3:
+            return render_template('teacher.html')
+        if current_user.role_id == 1:
+            return render_template('student.html')
 
     if get('http://127.0.0.1:8080//api/users/1').status_code == 404:
         post('http://127.0.0.1:8080//api/roles', json={"name": "SysAdmin", "can_view_teachers": 1,
@@ -70,12 +79,18 @@ def login():
         if user and user.check_password(form_log.password.data):
             # выполняется вход пользователя
             login_user(user, remember=True)
-            return redirect("/")
-
+            if current_user.role_id == 1:
+                return render_template('system_admin.html')
+            if current_user.role_id == 2:
+                return render_template('ed_process_admin.html')
+            if current_user.role_id == 3:
+                return render_template('teacher.html')
+            if current_user.role_id == 1:
+                return render_template('student.html')
         return render_template('login.html',
-                               message_log="Неправильный логин или пароль",
-                               form_log=form_log,)
-    return render_template('main_page.html')
+                               error="Неправильный логин или пароль",
+                               form_log=form_log)
+    return render_template('login.html', form_log=form_log)
 
 
 # выход из системы
