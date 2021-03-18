@@ -9,10 +9,11 @@
     <div class="login_box">
         <h1>Авторизируйтесь</h1>
         <div class="login_info_box">
-            <form method="POST">
+            <form method="POST" action="{{url_for('login')}}">
+                {{ form_log.hidden_tag() }}
             <div class="textbox">
-                <input type="text" placeholder="Логин"><br>
-                <input type="password" placeholder="Пароль">
+                <input type="text" name="login" placeholder="Логин"><br>
+                <input type="password" name="password" placeholder="Пароль">
             </div>
             <div class="authorization_error">
                 {{error}}

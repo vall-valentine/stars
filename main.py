@@ -1,6 +1,6 @@
 from flask import Flask, abort
 from flask import redirect
-from flask import render_template
+from flask import render_template, redirect
 from flask_login import LoginManager, login_user, logout_user
 from flask_login import login_required, current_user
 from requests import get, post, put, delete
@@ -38,13 +38,13 @@ def load_user(user_id):
 def login():
     if current_user.is_authenticated:
         if current_user.role_id == 1:
-            return render_template('system_admin.html')
+            return redirect('/system_admin')
         if current_user.role_id == 2:
-            return render_template('ed_process_admin.html')
+            return render_template('/ed_process_admin')
         if current_user.role_id == 3:
-            return render_template('teacher.html')
+            return render_template('/teacher')
         if current_user.role_id == 1:
-            return render_template('student.html')
+            return render_template('/student')
 
     if get('http://127.0.0.1:8080//api/users/1').status_code == 404:
         post('http://127.0.0.1:8080//api/roles', json={"name": "SysAdmin", "can_view_teachers": 1,
@@ -80,13 +80,13 @@ def login():
             # выполняется вход пользователя
             login_user(user, remember=True)
             if current_user.role_id == 1:
-                return render_template('system_admin.html')
+                return redirect('/system_admin')
             if current_user.role_id == 2:
-                return render_template('ed_process_admin.html')
+                return render_template('/ed_process_admin')
             if current_user.role_id == 3:
-                return render_template('teacher.html')
+                return render_template('/teacher')
             if current_user.role_id == 1:
-                return render_template('student.html')
+                return render_template('/student')
         return render_template('login.html',
                                error="Неправильный логин или пароль",
                                form_log=form_log)
