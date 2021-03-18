@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Authorisation</title>
+</head>
+<body>
+<div class="login_box">
+    <h1>Авторизируйтесь</h1>
+    <div class="login_info_box">
+        <form method="POST">
+        <div class="textbox">
+            <input type="text" placeholder="Логин">
+        </div>
+        <div class="textbox">
+            <input type="password" placeholder="Пароль">
+        </div>
+        <div class="authorization_error">
+            {{error}}
+        </div>
+        <input class="submit_buttons" type="submit" value="Вход">
+        </form>
+    </div>
+</div>
+</body>
+</html>

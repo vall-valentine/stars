@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Запланированные тесты</title>
+</head>
+<body>
+<div class="tests_box">
+    <div class="tests">
+        {% for test in tests %}
+        <div class="test" onclick="redirect()">
+            <p>{{test_name}}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="back_button">
+        <input type="button" value="Назад">
+    </div>
+</div>
+</body>
+</html>
