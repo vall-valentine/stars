@@ -8,7 +8,23 @@
 <body id="background_grad">
     <div class="reg_box">
         <h1>Регистрация</h1>
-
+        <div class="info_reg_box">
+            <form method="POST">
+            <div class="textbox">
+                <input type="text" placeholder="Фамилия"><br>
+                <input type="text" placeholder="Имя"><br>
+                <input type="text" placeholder="Логин"><br>
+                <input type="password" placeholder="Пароль">
+            </div>
+            <div class="registration_error">
+                {{error}}
+            </div>
+            <input class="submit_buttons" type="submit" value="Зарегистрировать">
+            </form>
+            <div class="buttons">
+                <input type="button" value="Выйти">
+            </div>
+        </div>
     </div>
 </body>
 </html>
