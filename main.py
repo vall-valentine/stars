@@ -1,14 +1,80 @@
-from flask import Flask, render_template
+from flask import Flask, abort
+from flask import redirect
+from flask import render_template
+from flask import request
+from flask_login import LoginManager, login_user, logout_user
+from flask_login import login_required, current_user
+from requests import get, post, put, delete
+
 from data import db_session
+from data.__all_models import Users, Roles, Groups, TeacherGroups, GroupStudents, Test, \
+    Questions, TestQuestions, TestResults
+from forms.forms import UserRegisterForm, GroupRegisterForm, QuestionRegisterForm,\
+    TestRegisterForm, QuestionForm, LoginForm
+
+from conf.routes import generate_routes
+
+app = Flask(__name__)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+generate_routes(app)
 
 app = Flask(__name__)
 
 
-# страница входа
+# вход юзера
 @app.route('/', methods=['GET'])
 @app.route('/login', methods=['GET'])
+@login_manager.user_loader
+def load_user(user_id):
+    db_session.global_init("db/database.sqlite")
+    session = db_session.create_session()
+    return session.query(Users).get(user_id)
+
+
+# страница входа
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
+    if current_user.is_authenticated:
+        return redirect('/feed')
+
+    form_log = LoginForm()
+
+    # если форма заполнена и отправлена
+    if form_log.validate_on_submit():
+        db_session.global_init("db/database.sqlite")
+        session = db_session.create_session()
+        user = session.query(Users).filter(Users.login ==
+                                           form_log.login.data).first()
+
+        # если пароль введён верный
+        if user and user.check_password(form_log.password.data):
+            # выполняется вход пользователя
+            login_user(user, remember=True)
+            return redirect("/")
+
+        return render_template('login.html',
+                               message_log="Неправильный логин или пароль",
+                               form_log=form_log,)
+    return render_template('login.html',
+                           title='Авторизация',
+                           form_log=form_log)
+
+
+# выход из системы
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
+
+
+# перенаправление неавторизированных
+@login_manager.unauthorized_handler
+def unauthorized():
+    return redirect('/login')
 
 
 # страница ученика

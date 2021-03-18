@@ -5,6 +5,8 @@ from sqlalchemy import orm
 
 from .db_session import SqlAlchemyBase
 
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 class Users(SqlAlchemyBase, UserMixin, SerializerMixin):
     __tablename__ = 'users'
@@ -25,6 +27,12 @@ class Users(SqlAlchemyBase, UserMixin, SerializerMixin):
     testresults = orm.relation("TestResults", back_populates='students')
     tests = orm.relation("Tests", back_populates='tests')
 
+    def set_password(self, password):
+        self.hashed_password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.hashed_password, password)
+
 
 class Roles(SqlAlchemyBase, UserMixin, SerializerMixin):
     __tablename__ = 'roles'
@@ -33,7 +41,7 @@ class Roles(SqlAlchemyBase, UserMixin, SerializerMixin):
                            primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     can_view_teachers = sqlalchemy.Column(sqlalchemy.Boolean, nullable=True)
-    can__view_tests = sqlalchemy.Column(sqlalchemy.Boolean, nullable=True)
+    can_view_tests = sqlalchemy.Column(sqlalchemy.Boolean, nullable=True)
     can_add_users = sqlalchemy.Column(sqlalchemy.Boolean, nullable=True)
     can_add_tests = sqlalchemy.Column(sqlalchemy.Boolean, nullable=True)
     can_complete_tests = sqlalchemy.Column(sqlalchemy.Boolean, nullable=True)
@@ -49,7 +57,6 @@ class Groups(SqlAlchemyBase, UserMixin, SerializerMixin):
     name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
 
     teachergroups = orm.relation("TeacherGroups", back_populates='groups')
-    tests = orm.relation("Tests", back_populates='groups')
 
 
 class TeacherGroups(SqlAlchemyBase, UserMixin, SerializerMixin):
@@ -83,6 +90,7 @@ class Test(SqlAlchemyBase, UserMixin, SerializerMixin):
                            primary_key=True, autoincrement=True)
     group_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("groups.id"))
     teacher_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"))
+    start_date = sqlalchemy.Column(sqlalchemy.DateTime)
 
     teachers = orm.relation('Users')
     groups = orm.relation('Groups')
@@ -95,11 +103,16 @@ class Questions(SqlAlchemyBase, UserMixin, SerializerMixin):
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
-    group_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("groups.id"))
     teacher_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"))
 
+    module = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
+    description = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    correct_answer = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    wrong_answer1 = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    wrong_answer2 = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    wrong_answer3 = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+
     teachers = orm.relation('Users')
-    groups = orm.relation('Groups')
 
     testquestions = orm.relation("TestQuestions", back_populates='questions')
 
@@ -113,7 +126,7 @@ class TestQuestions(SqlAlchemyBase, UserMixin, SerializerMixin):
     question_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("questions.id"))
 
     tests = orm.relation('Tests')
-    Questions = orm.relation('Questions')
+    questions = orm.relation('Questions')
 
 
 class TestResults(SqlAlchemyBase, UserMixin, SerializerMixin):
