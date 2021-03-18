@@ -9,17 +9,14 @@
     <div class="reg_box">
         <h1>Регистрация</h1>
         <div class="info_reg_box">
-            <form method="POST">
+            <form method="POST" action="{{url_for('system_admin_new_user')}}">
+                {{ form_reg.hidden_tag() }}
             <div class="textbox">
-                <input type="text" placeholder="Фамилия"><br>
-                <input type="text" placeholder="Имя"><br>
-                <input type="text" placeholder="Логин"><br>
-                <input type="password" placeholder="Пароль">
-            </div>
-            <div class="roles">
-                <input type="radio" name="role" value="Ученик"><br>
-                <input type="radio" name="role" value="Учитель"><br>
-                <input type="radio" name="role" value="Администратор учебного процесса">
+                <input type="text" placeholder="Фамилия" name="surname"><br>
+                <input type="text" placeholder="Имя" name="'name"><br>
+                <input type="text" placeholder="Логин" name="login"><br>
+                <input type="password" placeholder="Пароль" name="password"><br>
+                <input type="text" placeholder="Роль: 1 - Администратор системы,\n2 - Учитель\n3 - Ученик" name="role_id">
             </div>
             <div class="registration_error">
                 {{error}}

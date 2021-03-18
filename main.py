@@ -183,27 +183,20 @@ def system_admin_new_group():
 @app.route('/system_admin/new_user', methods=['GET', 'POST'])
 def system_admin_new_user():
     form_reg = UserRegisterForm()
-
     if form_reg.validate_on_submit():
+        print(1)
         db_session.global_init("db/database.sqlite")
         session = db_session.create_session()
 
         if session.query(Users).filter(Users.login ==
                                        form_reg.login.data).first():
-            return render_template('system_admin_newuser.html',
-                                   form_reg=form_reg)
-
+            return render_template('system_admin_newuser.html', form_reg=form_reg)
+        print(form_reg.role1.data)
         if form_reg.role_id.data == 1:
             role_id = 1
-        post('http://127.0.0.1:8080/api/users', json={
-            'login': form_reg.login.data,
-            'password': form_reg.password.data,
-            'name': form_reg.name.data,
-            'surname': form_reg.surname.data,
-            'role_id': role_id
-        })
+
         return redirect('/logout')
-    return render_template('system_admin_newuser.html')
+    return render_template('system_admin_newuser.html', form_reg=form_reg)
 
 
 # страница администратора учебного процесса
