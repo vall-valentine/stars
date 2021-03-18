@@ -25,7 +25,7 @@ def student_tests():
 
 # определенный тест ученика
 @app.route('/student/tests/<test_name>', methods=['GET', 'POST'])
-def student_certain_test():
+def student_certain_test(test_name):
     return
 
 
