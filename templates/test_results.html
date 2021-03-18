@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+    <title>Students results</title>
+</head>
+<body>
+<h1>Результат группы {{name}}</h1>
+<h3>Учитель: {{surname}} {{name}}</h3>
+<div class="results_box">
+    <table>
+        <tr>
+            <th>Ученик</th>
+            <th>Результат %</th>
+            <th>Оценка</th>
+        </tr>
+        {% for student in students %}
+        <tr>
+            <td>{{student.surname}} {{student.name}}</td>
+            <td>{{result}}</td>
+            <td>{{mark}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div class="back_button">
+        <a href="./logout"><input type="button" value="Выйти"></a>
+    </div>
+</div>
+</body>
+</html>
