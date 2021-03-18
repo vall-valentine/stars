@@ -2,25 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
     <title>Authorisation</title>
 </head>
 <body>
-<div class="login_box">
-    <h1>Авторизируйтесь</h1>
-    <div class="login_info_box">
-        <form method="POST" action="{{url_for('login')}}">
-            {{ form_log.hidden_tag() }}
-        <div class="textbox">
-            <input type="text" name="login" placeholder="Логин">
+<div id="background_grad">
+    <div class="login_box">
+        <h1>Авторизируйтесь</h1>
+        <div class="login_info_box">
+            <form method="POST">
+            <div class="textbox">
+                <input type="text" placeholder="Логин">
+            </div>
+            <div class="textbox">
+                <input type="password" placeholder="Пароль">
+            </div>
+            <div class="authorization_error">
+                {{error}}
+            </div>
+            <input class="submit_buttons" type="submit" value="Вход">
+            </form>
         </div>
-        <div class="textbox">
-            <input type="password" name="password" placeholder="Пароль">
-        </div>
-        <div class="authorization_error">
-            {{error}}
-        </div>
-        <input class="submit_buttons" type="submit" value="Вход">
-        </form>
     </div>
 </div>
 </body>

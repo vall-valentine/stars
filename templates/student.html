@@ -2,17 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
     <title>{{student_name}}</title>
 </head>
 <body>
-<div class="student_box">
-    <h1>{{student_name}}</h1>
-    <div class="student_choice_box">
-        <div class="buttons">
-            <input type="button" value="Запланированные тестирования">
-        </div>
-        <div class="buttons">
-            <input type="button" value="Результаты тестирований">
+<div id="background_grad">
+    <div class="student_box">
+        <h1>{{student_name}}</h1>
+        <div class="student_choice_box">
+            <div class="buttons">
+                <input type="button" value="Запланированные тестирования">
+            </div>
+            <div class="buttons">
+                <input type="button" value="Результаты тестирований">
+            </div>
+            <div class="buttons">
+                <input type="button" value="Выйти">
+            </div>
         </div>
     </div>
 </div>
