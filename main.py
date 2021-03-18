@@ -109,7 +109,6 @@ def unauthorized():
 
 # страница ученика
 @app.route('/student', methods=['GET'])
-@roles_required('Student')
 def start_student():
     return render_template('student.html')
 
@@ -181,9 +180,23 @@ def system_admin_new_group():
 
 
 # регистрация нового пользователя системным администратором
-@app.route('/system_admin/new_user', methods=['GET'])
+@app.route('/system_admin/new_user', methods=['GET', 'POST'])
 def system_admin_new_user():
-    return render_template('system_admin_newuser.html')
+    form_reg = UserRegisterForm()
+    if form_reg.validate_on_submit():
+        print(1)
+        db_session.global_init("db/database.sqlite")
+        session = db_session.create_session()
+
+        if session.query(Users).filter(Users.login ==
+                                       form_reg.login.data).first():
+            return render_template('system_admin_newuser.html', form_reg=form_reg)
+        print(form_reg.role1.data)
+        if form_reg.role_id.data == 1:
+            role_id = 1
+
+        return redirect('/logout')
+    return render_template('system_admin_newuser.html', form_reg=form_reg)
 
 
 # страница администратора учебного процесса

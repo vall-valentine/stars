@@ -8,7 +8,7 @@ class UserRegisterForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     name = StringField('Name', validators=[DataRequired()])
     surname = StringField('Surname', validators=[DataRequired()])
-    role_id = IntegerField('Role', validators=[DataRequired()])
+    role_id = StringField('Role', validators=[DataRequired()])
 
 
 class GroupRegisterForm(FlaskForm):
