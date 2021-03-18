@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+    <title>New question</title>
+</head>
+<body>
+<h1>Новый вопрос</h1>
+<div class="question_box">
+    <form method="POST">
+        <div class="textbox">
+            <input type="text" placeholder="Номер модуля"><br>
+            <textarea placeholder="Содержание вопроса"></textarea><br>
+            <input type="text" placeholder="Правильный ответ">
+            <input type="text" placeholder="Неправильный ответ"><br>
+            <input type="text" placeholder="Неправильный ответ">
+            <input type="text" placeholder="Неправильный ответ">
+        </div>
+        <div class="question_error">
+            {{error}}
+        </div>
+        <input class="submit_buttons" type="submit" value="Добавить">
+    </form>
+    <div class="buttons">
+        <input type="button" value="Выйти">
+    </div>
+</div>
+</body>
+</html>
