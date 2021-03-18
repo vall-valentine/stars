@@ -128,7 +128,7 @@ def student_certain_test(test_name):
 # результаты ученика
 @app.route('/student/results', methods=['GET'])
 def student_results():
-    return render_template('student_results.html')
+    return render_template('student_tests_results.html')
 
 
 # страница учителя
@@ -152,7 +152,7 @@ def teacher_groups_students(group):
 # список результатов учеников определенной группы учителя
 @app.route('/teacher/groups/<group>/results', methods=['GET'])
 def teacher_students_results(group):
-    return
+    return render_template('test_results.html')
 
 
 # добавление вопросов учителем
@@ -238,7 +238,7 @@ def ed_process_admin_finished_tests():
 # просмотр результатов проведенных тестов администратором учебного процесса
 @app.route('/ed_process_admin/finished_tests/<test>', methods=['GET'])
 def ed_process_admin_results(test):
-    return render_template('ed_process_admin_results.html')
+    return render_template('test_results.html')
 
 
 # просмотр заданий администратором учебного процесса
