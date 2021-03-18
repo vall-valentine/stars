@@ -5,8 +5,7 @@
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
     <title>{{test_name}}</title>
 </head>
-<body>
-<div id="background_grad">
+<body id="background_grad">
     <div class="test_box">
         <h1>{{test_name}}</h1>
         <div class="content_box">
@@ -17,18 +16,10 @@
                         <p>{{question_content}}</p>
                     </div>
                     <div class="answers">
-                        <div class="test_radio_buttons">
-                            <input type="radio" value="{answer_1}">>
-                        </div>
-                        <div class="test_radio_buttons">
-                            <input type="radio" value="{answer_2}">>
-                        </div>
-                        <div class="test_radio_buttons">
-                            <input type="radio" value="{answer_3}">>
-                        </div>
-                        <div class="test_radio_buttons">
-                            <input type="radio" value="{answer_4}">>
-                        </div>
+                        <input type="radio" value="{answer_1}"><br>
+                        <input type="radio" value="{answer_2}"><br>
+                        <input type="radio" value="{answer_3}"><br>
+                        <input type="radio" value="{answer_4}">
                     </div>
                 </div>
                 {% endif %}
@@ -36,6 +27,5 @@
             <input class="submit_buttons" type="submit" value="Закончить">
         </div>
     </div>
-</div>
 </body>
 </html>
