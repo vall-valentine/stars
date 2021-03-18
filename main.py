@@ -184,19 +184,24 @@ def system_admin_new_group():
 def system_admin_new_user():
     form_reg = UserRegisterForm()
 
-    if form_reg.validate_on_submit():
+    if form_reg.is_submitted():
         db_session.global_init("db/database.sqlite")
         session = db_session.create_session()
 
         if session.query(Users).filter(Users.login ==
                                        form_reg.login.data).first():
-            return render_template('system_admin_newuser.html', form_reg=form_reg)
+            return render_template('system_admin_newuser.html', form_reg=form_reg, error="Логин существует")
         post('http://127.0.0.1:8080//api/users', json={"name": form_reg.name.data, "login": form_reg.login.data,
                                                        "surname": form_reg.surname.data,
                                                        "role_id": form_reg.role_id.data,
                                                        "hashed_password": form_reg.password.data})
 
         return redirect('/')
+    else:
+        print({"name": form_reg.name.data, "login": form_reg.login.data,
+                                                       "surname": form_reg.surname.data,
+                                                       "role_id": form_reg.role_id.data,
+                                                       "hashed_password": form_reg.password.data})
     return render_template('system_admin_newuser.html', form_reg=form_reg)
 
 
