@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher group</title>
+</head>
+<body>
+<h1>{{surname}} {{name}}</h1>
+    <div class="teacher_groups_box">
+        <div class="groups">
+            {% for group in groups %}
+            <div class="group">
+                <p>{{name}}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="back_button">
+            <a href="./logout"><input type="button" value="Выйти"></a>
+        </div>
+    </div>
+</body>
+</html>

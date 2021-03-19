@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+    <title>Задания</title>
+</head>
+<body>
+    <div class="questions_box">
+        <div class="questions">
+            {% for question in questions %}
+            <div class="question">
+                <p>{{question}}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="back_button">
+            <a href="./logout"><input type="button" value="Выйти"></a>
+        </div>
+    </div>
+</body>
+</html>
