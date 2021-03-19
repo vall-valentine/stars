@@ -49,24 +49,24 @@ def login():
         if current_user.role_id == 4:
             return redirect('/student')
 
-    if get('http://127.0.0.1:8080//api/users/1').status_code == 404:
-        post('http://127.0.0.1:8080//api/roles', json={"name": "SysAdmin", "can_view_teachers": 1,
+    if get('https://ssstarsss.herokuapp.com/api/users/1').status_code == 404:
+        post('https://ssstarsss.herokuapp.com/api/roles', json={"name": "SysAdmin", "can_view_teachers": 1,
                                                        "can_view_tests": 1, "can_add_users": 1,
                                                        "can_add_tests": 1, "can_complete_tests": 1})
 
-        post('http://127.0.0.1:8080//api/roles', json={'name': 'EduAdmin', 'can_view_teachers': 1,
+        post('https://ssstarsss.herokuapp.com/api/roles', json={'name': 'EduAdmin', 'can_view_teachers': 1,
                                                        'can_view_tests': 1, 'can_add_users': 0,
                                                        'can_add_tests': 0, 'can_complete_tests': 0})
 
-        post('http://127.0.0.1:8080//api/roles', json={'name': 'Teacher', 'can_view_teachers': 0,
+        post('https://ssstarsss.herokuapp.com/api/roles', json={'name': 'Teacher', 'can_view_teachers': 0,
                                                        'can_view_tests': 1, 'can_add_users': 0,
                                                        'can_add_tests': 0, 'can_complete_tests': 0})
 
-        post('http://127.0.0.1:8080//api/roles', json={'name': 'Student', 'can_view_teachers': 0,
+        post('https://ssstarsss.herokuapp.com/api/roles', json={'name': 'Student', 'can_view_teachers': 0,
                                                        'can_view_tests': 1, 'can_add_users': 0,
                                                        'can_add_tests': 1, 'can_complete_tests': 0})
 
-        post('http://127.0.0.1:8080//api/users', json={'login': "admin", 'surname': 'Админов',
+        post('https://ssstarsss.herokuapp.com/api/users', json={'login': "admin", 'surname': 'Админов',
                                                        'role_id': 1, 'name': 'Админ', 'hashed_password': '111'})
 
     form_log = LoginForm()
@@ -163,7 +163,7 @@ def student_certain_test(test_id):
             else:
                 mark = 2
 
-            post('http://127.0.0.1:8080//api/testresults', json={"test_id": test.id, "student_id": current_user.id,
+            post('https://ssstarsss.herokuapp.com/api/testresults', json={"test_id": test.id, "student_id": current_user.id,
                                                              "result": result, "mark": mark})
         return redirect('/student/results')
 
@@ -237,7 +237,7 @@ def teacher_students_results(group_id):
 def teacher_add_question():
     form_reg = QuestionRegisterForm()
     if form_reg.validate_on_submit():
-        post('http://127.0.0.1:8080//api/questions', json={"module": form_reg.module.data, "teacher_id": current_user.id,
+        post('https://ssstarsss.herokuapp.com/api/questions', json={"module": form_reg.module.data, "teacher_id": current_user.id,
                                                            "description": form_reg.description.data,
                                                            "correct_answer": form_reg.correct_answer.data,
                                                            "wrong_answer1": form_reg.wrong_answer1.data,
@@ -278,7 +278,7 @@ def teacher_test_options():
 
         for q in questions:
             print(test.id)
-            post('http://127.0.0.1:8080//api/testquestions', json={'test_id': test.id,
+            post('https://ssstarsss.herokuapp.com//api/testquestions', json={'test_id': test.id,
                                                                    'question_id': q.id})
         return redirect('/')
 
@@ -300,19 +300,19 @@ def system_admin_new_group():
         db_session.global_init("db/database.sqlite")
         session = db_session.create_session()
 
-        post('http://127.0.0.1:8080//api/groups', json={"name": form_reg.name.data})
+        post('https://ssstarsss.herokuapp.com//api/groups', json={"name": form_reg.name.data})
 
         group = session.query(Groups)[-1]
 
         teacher = session.query(Users).filter(Users.login == form_reg.teacher.data).first()
 
-        post('http://127.0.0.1:8080//api/teachergroups', json={"teacher_id": teacher.id,
+        post('https://ssstarsss.herokuapp.com/api/teachergroups', json={"teacher_id": teacher.id,
                                                                "group_id": group.id})
 
         students = form_reg.students.data.split()
         for student in students:
             st = session.query(Users).filter(Users.login == student).first()
-            post('http://127.0.0.1:8080//api/groupstudents', json={"group_id": group.id,
+            post('https://ssstarsss.herokuapp.com/api/groupstudents', json={"group_id": group.id,
                                                                    "student_id": st.id})
 
         return redirect('/')
@@ -332,7 +332,7 @@ def system_admin_new_user():
         if session.query(Users).filter(Users.login ==
                                        form_reg.login.data).first():
             return render_template('system_admin_newuser.html', form_reg=form_reg, error="Логин существует")
-        post('http://127.0.0.1:8080//api/users', json={"name": form_reg.name.data, "login": form_reg.login.data,
+        post('https://ssstarsss.herokuapp.com/api/users', json={"name": form_reg.name.data, "login": form_reg.login.data,
                                                        "surname": form_reg.surname.data,
                                                        "role_id": form_reg.role_id.data,
                                                        "hashed_password": form_reg.password.data})
@@ -426,11 +426,12 @@ def ed_process_admin_questions():
 
 if __name__ == '__main__':
     # Для Heroku
-
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
 
     # Для локального тестирования
-    app.run(port=8080, host='127.0.0.1')
-
+    # app.run(port=8080, host='127.0.0.1')
+    
     # can_view_teachers значит и тесты видит, и учеников препода, и вопросы загруженные
     # can_view_tests значит видит тесты запланнированные и оценки
     # can_add_users значит и добавлять группы и студентов в них
