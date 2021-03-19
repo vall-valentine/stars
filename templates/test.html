@@ -20,7 +20,7 @@
                     <div class="answers">
                         {{ form.hidden_tag() }}
                         {% set answers = [question.correct_answer, question.wrong_answer1, question.wrong_answer2, question.wrong_answer3] %}
-                        {{ shuffle(answers) }}<br>
+                        <div class="invisible">{{ shuffle(answers) }}</div><br>
                         <p><input type="radio" name="answer{{ count }}" value="{{ answers[0] }}">{{ answers[0] }}</p><br>
                         <p><input type="radio" name="answer{{ count }}" value="{{ answers[1] }}">{{ answers[1] }}</p><br>
                         <p><input type="radio" name="answer{{ count }}" value="{{ answers[2] }}">{{ answers[2] }}</p><br>
