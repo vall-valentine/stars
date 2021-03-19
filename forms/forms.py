@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, PasswordField, IntegerField, DateField, BooleanField
+from wtforms import StringField, TextAreaField, PasswordField, IntegerField, DateField, BooleanField, RadioField
 from wtforms.validators import DataRequired
 
 
@@ -8,7 +8,7 @@ class UserRegisterForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     name = StringField('Name', validators=[DataRequired()])
     surname = StringField('Surname', validators=[DataRequired()])
-    role_id = StringField('Role', validators=[DataRequired()])
+    role_id = RadioField('Role', validators=[DataRequired()])
 
 
 class GroupRegisterForm(FlaskForm):

@@ -16,7 +16,11 @@
                 <input type="text" placeholder="Имя" name="name"><br>
                 <input type="text" placeholder="Логин" name="login"><br>
                 <input type="password" placeholder="Пароль" name="password"><br>
-                <input type="text" placeholder="Роль: 1 - Администратор системы,\n2 - Учитель\n3 - Ученик" name="role_id">
+
+                <input type="radio" name="role_id" value=1><br>
+                <input type="radio" name="role_id" value=2><br>
+                <input type="radio" name="role_id" value=3>
+
             </div>
             <div class="registration_error">
                 {{error}}
@@ -24,7 +28,7 @@
             <input class="submit_buttons" type="submit" value="Зарегистрировать">
             </form>
             <div class="buttons">
-                <a href="./logout"><input type="button" value="Выйти"></a>
+                <a href="../logout"><input type="button" value="Выйти"></a>
             </div>
         </div>
     </div>
