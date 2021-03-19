@@ -1,9 +1,8 @@
-from flask import Flask, abort
-from flask import redirect
+from flask import Flask
 from flask import render_template, redirect
 from flask_login import LoginManager, login_user, logout_user
 from flask_login import login_required, current_user
-from requests import get, post, put, delete
+from requests import get, post
 
 from data import db_session
 from data.__all_models import Users, Roles, Groups, TeacherGroups, GroupStudents, Tests, \
@@ -14,6 +13,10 @@ from forms.forms import UserRegisterForm, GroupRegisterForm, QuestionRegisterFor
 from random import shuffle
 
 from conf.routes import generate_routes
+
+import os
+
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'solnyshki_vperyod'
@@ -422,8 +425,12 @@ def ed_process_admin_questions():
 
 
 if __name__ == '__main__':
-    db_session.global_init("db/database.sqlite")
-    app.run(port=8080, host='127.0.0.1')
+    # Для Heroku
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
+
+    # Для локального тестирования
+    # app.run(port=8080, host='127.0.0.1')
 
     # can_view_teachers значит и тесты видит, и учеников препода, и вопросы загруженные
     # can_view_tests значит видит тесты запланнированные и оценки
