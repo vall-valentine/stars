@@ -10,12 +10,14 @@
         <div class="tests">
             {% for test in tests %}
             <div class="test" onclick="redirect()">
-                <p>{{test_name}}</p>
+                <p>Группа {{test.group_id}}</p>
+                <p>Учитель {{test.teacher_id}}</p>
+                <p>Начало {{test.start_date}}</p>
             </div>
             {% endfor %}
         </div>
         <div class="back_button">
-            <a href="./logout"><input type="button" value="Выйти"></a>
+            <a href="../logout"><input type="button" value="Выйти"></a>
         </div>
     </div>
 </body>

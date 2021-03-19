@@ -35,10 +35,11 @@ class TestRegisterForm(FlaskForm):
 
 
 class QuestionForm(FlaskForm):
-    answer1 = BooleanField('Answer', validators=[DataRequired()])
-    answer2 = BooleanField('Answer', validators=[DataRequired()])
-    answer3 = BooleanField('Answer', validators=[DataRequired()])
-    answer4 = BooleanField('Answer', validators=[DataRequired()])
+    answer0 = StringField('Answer', validators=[DataRequired()])
+    answer1 = StringField('Answer', validators=[DataRequired()])
+    answer2 = StringField('Answer', validators=[DataRequired()])
+    answer3 = StringField('Answer', validators=[DataRequired()])
+    answer4 = StringField('Answer', validators=[DataRequired()])
 
 
 class LoginForm(FlaskForm):

@@ -10,15 +10,15 @@
 <div class="results_box">
     <table>
         <tr>
-            <th>Тест</th>
+            <th>Номер теста</th>
             <th>Результат %</th>
             <th>Оценка</th>
         </tr>
-        {% for test in tests %}
+        {% for result in results %}
         <tr>
-            <td>{{test.name}}</td>
-            <td>{{result}}</td>
-            <td>{{mark}}</td>
+            <td>{{result.test_id}}</td>
+            <td>{{result.result}}</td>
+            <td>{{result.mark}}</td>
         </tr>
         {% endfor %}
     </table>

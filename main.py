@@ -11,7 +11,7 @@ from data.__all_models import Users, Roles, Groups, TeacherGroups, GroupStudents
 from forms.forms import UserRegisterForm, GroupRegisterForm, QuestionRegisterForm,\
     TestRegisterForm, QuestionForm, LoginForm
 
-from flask_user import roles_required
+from random import shuffle
 
 from conf.routes import generate_routes
 
@@ -40,11 +40,11 @@ def login():
         if current_user.role_id == 1:
             return redirect('/system_admin')
         if current_user.role_id == 2:
-            return render_template('/ed_process_admin')
+            return redirect('/ed_process_admin')
         if current_user.role_id == 3:
-            return render_template('/teacher')
-        if current_user.role_id == 1:
-            return render_template('/student')
+            return redirect('/teacher')
+        if current_user.role_id == 4:
+            return redirect('/student')
 
     if get('http://127.0.0.1:8080//api/users/1').status_code == 404:
         post('http://127.0.0.1:8080//api/roles', json={"name": "SysAdmin", "can_view_teachers": 1,
@@ -82,11 +82,11 @@ def login():
             if current_user.role_id == 1:
                 return redirect('/system_admin')
             if current_user.role_id == 2:
-                return render_template('/ed_process_admin')
+                return redirect('/ed_process_admin')
             if current_user.role_id == 3:
-                return render_template('/teacher')
-            if current_user.role_id == 1:
-                return render_template('/student')
+                return redirect('/teacher')
+            if current_user.role_id == 4:
+                return redirect('/student')
         return render_template('login.html',
                                error="Неправильный логин или пароль",
                                form_log=form_log)
@@ -116,19 +116,63 @@ def start_student():
 # все тесты ученика
 @app.route('/student/tests', methods=['GET'])
 def student_tests():
-    return render_template('student_tests.html')
+    db_session.global_init("db/database.sqlite")
+    session = db_session.create_session()
+    group = session.query(GroupStudents).filter(GroupStudents.student_id == current_user.id).first()
+    tests = session.query(Tests).filter(Tests.group_id == group.id).all()
+    return render_template('student_tests.html', tests=tests)
 
 
 # определенный тест ученика
-@app.route('/student/tests/<test_name>', methods=['GET', 'POST'])
-def student_certain_test(test_name):
-    return
+@app.route('/student/tests/<test_id>', methods=['GET', 'POST'])
+def student_certain_test(test_id):
+    form = QuestionForm()
+    db_session.global_init("db/database.sqlite")
+    session = db_session.create_session()
+    test = session.query(Tests).filter(Tests.id == test_id).first()
+    testquestions = session.query(TestQuestions).filter(TestQuestions.test_id == test_id).all()
+    questions = []
+    for q in testquestions:
+        questions.append(session.query(Questions).filter(Questions.id == q.id).first())
+    len_q = len(questions)
+
+    if form.is_submitted():
+        answers = []
+        for i in range(len_q):
+            exec(f'answers.append(form.answer{i}.data)')
+
+        correct_answers = []
+        for question in questions:
+            correct_answers.append(question.correct_answer)
+
+        result = 0
+        for count in range(len_q):
+            if answers[count] == correct_answers[count]:
+                result += 1
+
+        if result // len_q * 100 > 85:
+            mark = 5
+        elif result // len_q * 100 > 70:
+            mark = 4
+        elif result // len_q * 100 > 50:
+            mark = 3
+        else:
+            mark = 2
+
+        post('http://127.0.0.1:8080//api/testresults', json={"test_id": test.id, "student_id": current_user.id,
+                                                             "result": result, "mark": mark})
+        return redirect('/')
+
+    return render_template('test.html', test=test, questions=questions, shuffle=shuffle, len_q=len_q, form=form)
 
 
 # результаты ученика
 @app.route('/student/results', methods=['GET'])
 def student_results():
-    return render_template('student_tests_results.html')
+    db_session.global_init("db/database.sqlite")
+    session = db_session.create_session()
+    results = session.query(TestResults).filter(TestResults.student_id == current_user.id).all()
+    return render_template('student_tests_results.html', results=results)
 
 
 # страница учителя
@@ -174,7 +218,7 @@ def start_system_admin():
 
 
 # создание группы учеников системным администратором
-@app.route('/system_admin/new_group', methods=['GET'])
+@app.route('/system_admin/new_group', methods=['GET', 'POST'])
 def system_admin_new_group():
     return render_template('system_admin_newgroup.html')
 
@@ -206,7 +250,7 @@ def system_admin_new_user():
 
 
 # страница администратора учебного процесса
-@app.route('/ed_process_admin', methods=['GET'])
+@app.route('/ed_process_admin', methods=['GET', 'POST'])
 def start_ed_process_admin():
     return render_template('ed_process_admin.html')
 

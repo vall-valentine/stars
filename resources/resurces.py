@@ -649,7 +649,7 @@ class TestResultsResource(Resource):
         args = parser.parse_args()
 
         session = db_session.create_session()
-        tr = session.query(TestQuestions).get(tr_id)
+        tr = session.query(TestResults).get(tr_id)
 
         if args['student_id']:
             tr.login = args['student_id']
@@ -667,7 +667,7 @@ class TestResultsResource(Resource):
 class TestResultsListResource(Resource):
     def get(self):
         session = db_session.create_session()
-        tr = session.query(TestQuestions).all()
+        tr = session.query(TestResults).all()
         return jsonify({'testresults': [item.to_dict(
             only=('student_id', 'test_id', 'mark', 'result')) for item in tr]})
 
@@ -681,8 +681,8 @@ class TestResultsListResource(Resource):
         args = parser.parse_args()
 
         session = db_session.create_session()
-        tr = TestQuestions(
-            question_id=args['student_id'],
+        tr = TestResults(
+            student_id=args['student_id'],
             test_id=args['test_id'],
             mark=args['mark'],
             result=args['result'],
