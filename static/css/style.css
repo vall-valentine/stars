@@ -1,3 +1,4 @@
+<style>
 body {
   background: linear-gradient(rgba(192,172,211,0), rgba(192,172,211,1)) fixed;
 }
@@ -52,7 +53,18 @@ input[type=text] {
   width: 80%;
   border: 1px solid rgb(210, 210, 210);
   border-radius: 4px;
-  padding-bottom: 2%;
+  padding: 2%;
+  margin: 2%;
+  font-size: 16px;
+}
+
+input[type=date] {
+  color: rgb(106,139,147);
+  font-family: 'Courier New', monospace;
+  width: 80%;
+  border: 1px solid rgb(210, 210, 210);
+  border-radius: 4px;
+  padding: 2%;
   margin: 2%;
   font-size: 16px;
 }
@@ -63,7 +75,7 @@ input[type=password] {
   width: 80%;
   border: 1px solid rgb(210, 210, 210);
   border-radius: 4px;
-  padding-bottom: 2%;
+  padding: 2%;
   margin: 2%;
   font-size: 16px;
 }
@@ -74,7 +86,7 @@ textarea {
   width: 80%;
   border: 1px solid rgb(210, 210, 210);
   border-radius: 4px;
-  padding-bottom: 2%;
+  padding: 2%;
   margin: 2%;
   font-size: 16px;
 }
@@ -88,10 +100,18 @@ textarea {
   padding-top: 2%;
   padding-bottom: 2%;
 }
+
+.content_box {
+  color: rgb(106,139,147);
+  font: bold;
+  font-size: 20px;
+}
+
 .teacher {
   font-family: 'Courier New', monospace;
   color: rgb(106,139,147);
   text-align: left;
+  border-radius: 8px;
   margin: 2%;
   padding: 1%;
   border: 1px solid rgb(106,139,147);
@@ -100,6 +120,7 @@ textarea {
   font-family: 'Courier New', monospace;
   color: rgb(106,139,147);
   text-align: left;
+  border-radius: 8px;
   margin: 2%;
   padding: 1%;
   border: 1px solid rgb(106,139,147);
@@ -109,6 +130,17 @@ textarea {
   font-family: 'Courier New', monospace;
   color: rgb(106,139,147);
   text-align: left;
+  border-radius: 8px;
+  margin: 2%;
+  padding: 1%;
+  border: 1px solid rgb(106,139,147);
+}
+
+.question {
+  font-family: 'Courier New', monospace;
+  color: rgb(106,139,147);
+  text-align: left;
+  border-radius: 8px;
   margin: 2%;
   padding: 1%;
   border: 1px solid rgb(106,139,147);
@@ -148,3 +180,5 @@ th {
 .invisible {
   display: none;
 }
+
+</style>
