@@ -11,7 +11,7 @@
     <div class="questions">
         {% for question in questions %}
         <div class="question">
-            <p>Вопрос: {{ question.description }} (модуль: {{ question.module }})</p>
+            <p><b>Вопрос: {{ question.description }} (модуль: {{ question.module }})</b></p>
             <ul>
                 <li>Правильный ответ: {{ question.correct_answer }}</li>
                 <li>{{ question.wrong_answer1 }}</li>

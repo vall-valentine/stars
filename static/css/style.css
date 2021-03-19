@@ -79,6 +79,13 @@ input[type=password] {
   font-size: 16px;
 }
 
+input[type=radio] {
+  width: 15%;
+  padding: 2%;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
 textarea {
   color: rgb(106,139,147);
   font-family: 'Courier New', monospace;
@@ -173,7 +180,13 @@ table, tr, th, td {
 th {
   text-align: center;
   background: rgba(0, 0, 0, 0.2);
+}
 
+.p_radio {
+  text-align: left;
+  color: rgb(106,139,147);
+  font-family: 'Courier New', monospace;
+  font-size: 18px;
 }
 
 .invisible {
