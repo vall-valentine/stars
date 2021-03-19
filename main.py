@@ -20,6 +20,8 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'solnyshki_vperyod'
+file_path = os.path.abspath(os.getcwd()) + "\database.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + file_path
 
 login_manager = LoginManager(app)
 login_manager.init_app(app)
@@ -431,7 +433,7 @@ if __name__ == '__main__':
 
     # Для локального тестирования
     # app.run(port=8080, host='127.0.0.1')
-    
+
     # can_view_teachers значит и тесты видит, и учеников препода, и вопросы загруженные
     # can_view_tests значит видит тесты запланнированные и оценки
     # can_add_users значит и добавлять группы и студентов в них
