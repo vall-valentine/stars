@@ -9,8 +9,12 @@
     <div class="tests_box">
         <div class="tests" onclick="redirect()">
             {% for test in tests %}
+        <div class="tests">
+            {% for test in tests %}
             <div class="test" onclick="redirect()">
-                <p>{{test_name}}</p>
+                <p>Группа {{test.group_id}}</p>
+                <p>Учитель {{test.teacher_id}}</p>
+                <p>Начало {{test.start_date}}</p>
             </div>
             {% endfor %}
         </div>
@@ -19,4 +23,3 @@
         </div>
     </div>
 </body>
-</html>
