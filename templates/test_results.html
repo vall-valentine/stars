@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>Результат группы {{group.name}}</h1>
-<div class="results_box">
+<div class="box">
     <table>
         <tr>
             <th>Тест</th>
@@ -24,9 +24,7 @@
         </tr>
         {% endfor %}
     </table>
-    <div class="back_button">
-        <a href="./logout"><input type="button" value="Выйти"></a>
-    </div>
+    <a href="./logout"><input class="back_button" type="button" value="Выйти"></a>
 </div>
 </body>
 </html>

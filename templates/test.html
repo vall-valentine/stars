@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
-    <title>{{test_name}}</title>
+    <title>{{ test_name }}</title>
 </head>
 <body>
-    <div class="test_box">
-        <h1>Тест</h1>
-        <div class="content_box">
-            <form method="POST">
+<h1>Тест</h1>
+<div class="box">
+    <div class="content_box">
+        <form method="POST">
             <div class="test_questions">
                 {% for count in range(len_q) %}
                 {% set question = questions[count] %}
@@ -20,7 +20,7 @@
                     <div class="answers">
                         {{ form.hidden_tag() }}
                         {% set answers = [question.correct_answer, question.wrong_answer1, question.wrong_answer2, question.wrong_answer3] %}
-                        {{ shuffle(answers) }}<br>
+                        <div class="invisible">{{ shuffle(answers) }}</div><br>
                         <p><input type="radio" name="answer{{ count }}" value="{{ answers[0] }}">{{ answers[0] }}</p><br>
                         <p><input type="radio" name="answer{{ count }}" value="{{ answers[1] }}">{{ answers[1] }}</p><br>
                         <p><input type="radio" name="answer{{ count }}" value="{{ answers[2] }}">{{ answers[2] }}</p><br>
@@ -30,8 +30,8 @@
                 {% endfor %}
             </div>
             <input class="submit_buttons" type="submit" value="Закончить">
-            </form>
-        </div>
+        </form>
     </div>
+</div>
 </body>
 </html>

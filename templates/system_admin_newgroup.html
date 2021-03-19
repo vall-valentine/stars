@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
-    <title>New group</title>
+    <title>Новая группа</title>
 </head>
 <body>
 <h1>Новая группа</h1>
 <div class="new_group_box">
+    <form method="POST" action="{{url_for('system_admin_new_group')}}">
+<div class="box">
     <form method="POST" action="{{url_for('system_admin_new_group')}}">
                 {{ form_reg.hidden_tag() }}
         <div class="textbox">
@@ -20,9 +22,7 @@
         </div>
         <input class="submit_buttons" type="submit" value="Добавить">
     </form>
-    <div class="buttons">
-        <a href="./logout"><input type="button" value="Выйти"></a>
-    </div>
+    <a href="./logout"><input class="back_button" type="button" value="Выйти"></a>
 </div>
 </body>
 </html>

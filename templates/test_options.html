@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Test options</title>
+    <title>Создание теста</title>
 </head>
 <body>
-    <div class="test_options_box">
-        <h1>Создание теста</h1>
-        <div class="options_box">
-            <form method="POST" action="{{url_for('login')}}">
-                {{ form_log.hidden_tag() }}
+<h1>Создание теста</h1>
+<div class="box">
+    <div class="options_box">
+        <form method="POST" action="{{url_for('teacher_test_options')}}">
+            {{ form_log.hidden_tag() }}
             <div class="textbox">
                 <input type="text" name="group_name" placeholder="Название группы"><br>
                 <input type="datetime-local" name="test_datetime" placeholder="Дата"><br>
@@ -21,11 +21,9 @@
                 {{error}}
             </div>
                 <button class="submit_buttons" type="submit" value="Создать">Создать</button>
-            </form>
-            <div class="buttons">
-                <a href="./logout"><input type="button" value="Выйти"></a>
-            </div>
-        </div>
+        </form>
+        <a href="./logout"><input class="back_button" type="button" value="Выйти"></a>
     </div>
+</div>
 </body>
 </html>

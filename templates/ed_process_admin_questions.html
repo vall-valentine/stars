@@ -6,17 +6,16 @@
     <title>Задания</title>
 </head>
 <body>
-    <div class="questions_box">
-        <div class="questions">
-            {% for question in questions %}
-            <div class="question">
-                <p>{{question}}</p>
-            </div>
-            {% endfor %}
+<h1>Задания</h1>
+<div class="box">
+    <div class="questions">
+        {% for question in questions %}
+        <div class="question">
+            <p>{{ question }}</p>
         </div>
-        <div class="back_button">
-            <a href="./logout"><input type="button" value="Выйти"></a>
-        </div>
+        {% endfor %}
     </div>
+    <a href="./logout"><input class="back_button" type="button" value="Выйти"></a>
+</div>
 </body>
 </html>

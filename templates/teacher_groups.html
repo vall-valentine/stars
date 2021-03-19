@@ -3,21 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
-    <title>My groups</title>
+    <title>Группы</title>
 </head>
 <body>
-    <div class="groups_box">
-        <h1>Группы</h1>
-        <div class="groups">
-            {% for group in groups %}
-            <div class="group" onclick="redirect()">
-                <p>{{group.name}}</p>
-            </div>
-            {% endfor %}
+<h1>Группы</h1>
+<div class="box">
+    <div class="groups">
+        {% for group in groups %}
+        <div class="group" onclick="redirect()">
+            <p>{{group.name}}</p>
         </div>
-        <div class="back_button">
-            <a href="./logout"><input type="button" value="Выйти"></a>
-        </div>
+        {% endfor %}
     </div>
+    <a href="./logout"><input class="back_button" type="button" value="Выйти"></a>
+</div>
 </body>
 </html>

@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
-    <title>My results</title>
+    <title>Результаты</title>
 </head>
 <body>
 <h1>Результаты тестов</h1>
-<div class="results_box">
+<div class="box">
     <table>
         <tr>
             <th>Номер теста</th>
-            <th>Результат %</th>
+            <th>Результат</th>
             <th>Оценка</th>
         </tr>
         {% for result in results %}
@@ -22,9 +22,7 @@
         </tr>
         {% endfor %}
     </table>
-    <div class="back_button">
-        <a href="./logout"><input type="button" value="Выйти"></a>
-    </div>
+    <a href="./logout"><input class="back_button" type="button" value="Выйти"></a>
 </div>
 </body>
 </html>

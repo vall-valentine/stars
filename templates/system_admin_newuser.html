@@ -3,34 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
-    <title>New user</title>
+    <title>Новый пользователь</title>
 </head>
 <body>
-    <div class="reg_box">
-        <h1>Регистрация</h1>
-        <div class="info_reg_box">
-            <form method="POST" action="{{url_for('system_admin_new_user')}}">
-                {{ form_reg.hidden_tag() }}
-            <div class="textbox">
-                <input type="text" placeholder="Фамилия" name="surname"><br>
-                <input type="text" placeholder="Имя" name="name"><br>
-                <input type="text" placeholder="Логин" name="login"><br>
-                <input type="password" placeholder="Пароль" name="password"><br>
+<h1>Регистрация</h1>
+<div class="box">
+    <form method="POST" action="{{url_for('system_admin_new_user')}}">
+        {{ form_reg.hidden_tag() }}
+        <div class="textbox">
+            <input type="text" placeholder="Фамилия" name="surname"><br>
+            <input type="text" placeholder="Имя" name="name"><br>
+            <input type="text" placeholder="Логин" name="login"><br>
+            <input type="password" placeholder="Пароль" name="password"><br>
 
-                <p><input type="radio" name="role_id" value=2>Администратор учебного процесса</p><br>
-                <p><input type="radio" name="role_id" value=3>Учитель</p><br>
-                <p><input type="radio" name="role_id" value=4>Ученик</p>
+            <p><input type="radio" name="role_id" value=2>Администратор учебного процесса</p><br>
+            <p><input type="radio" name="role_id" value=3>Учитель</p><br>
+            <p><input type="radio" name="role_id" value=4>Ученик</p>
 
-            </div>
-            <div class="registration_error">
-                {{error}}
-            </div>
-            <input class="submit_buttons" type="submit" value="Зарегистрировать">
-            </form>
-            <div class="buttons">
-                <a href="../logout"><input type="button" value="Выйти"></a>
-            </div>
         </div>
-    </div>
+        <div class="registration_error">
+            {{ error }}
+        </div>
+        <input class="submit_buttons" type="submit" value="Зарегистрировать">
+    </form>
+    <a href="../logout"><input class="back_button" type="button" value="Выйти"></a>
+</div>
 </body>
 </html>
