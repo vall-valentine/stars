@@ -2,21 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Teacher group</title>
+    <title>Группы преподавателя</title>
 </head>
 <body>
-<h1>{{surname}} {{name}}</h1>
-    <div class="box">
-        <div class="groups">
-            {% for group in groups %}
-            <div class="group">
-                <p>{{name}}</p>
-            </div>
-            {% endfor %}
+<h1>{{ surname }} {{ name }}</h1>
+<div class="box">
+    <div class="groups">
+        {% for group in groups %}
+        <div class="group">
+            <p>{{ name }}</p>
         </div>
-        <div class="back_button">
-            <a href="./logout"><input type="button" value="Выйти"></a>
-        </div>
+        {% endfor %}
     </div>
+    <div class="back_button">
+        <a href="./logout"><input type="button" value="Выйти"></a>
+    </div>
+</div>
 </body>
 </html>

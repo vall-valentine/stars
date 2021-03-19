@@ -7,17 +7,17 @@
 </head>
 <body>
 <h1>Запланированные тесты</h1>
-    <div class="box">
-        <div class="tests">
-            {% for test in tests %}
-            <div class="test">
-                <p>{{test_name}}</p>
-            </div>
-            {% endfor %}
+<div class="box">
+    <div class="tests">
+        {% for test in tests %}
+        <div class="test">
+            <p>{{ test_name }}</p>
         </div>
-        <div class="back_button">
-            <a href="./logout"><input type="button" value="Выйти"></a>
-        </div>
+        {% endfor %}
     </div>
+    <div class="back_button">
+        <a href="./logout"><input type="button" value="Выйти"></a>
+    </div>
+</div>
 </body>
 </html>

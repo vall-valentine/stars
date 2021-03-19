@@ -6,18 +6,17 @@
     <title>Запланированные тесты</title>
 </head>
 <body>
-    <div class="tests_box">
-        <div class="tests" onclick="redirect()">
-            {% for test in tests %}
-        <div class="tests">
-            {% for test in tests %}
-            <div class="test" onclick="redirect()">
-                <p>Группа {{test.group_id}}</p> <p>Начало {{test.start_date}}</p>
-            </div>
-            {% endfor %}
+<h1>Запланированные тесты</h1>
+<div class="box">
+    <div class="tests" onclick="redirect()">
+        {% for test in tests %}
+        <div class="test" onclick="redirect()">
+            <p>Группа {{test.group_id}}</p> <p>Начало {{test.start_date}}</p>
         </div>
-        <div class="back_button">
-            <a href="../logout"><input type="button" value="Выйти"></a>
-        </div>
+        {% endfor %}
     </div>
+    <div class="back_button">
+        <a href="../logout"><input type="button" value="Выйти"></a>
+    </div>
+</div>
 </body>

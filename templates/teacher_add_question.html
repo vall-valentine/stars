@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
-    <title>New question</title>
+    <title>Новый вопрос</title>
 </head>
 <body>
 <h1>Новый вопрос</h1>
-<div class="question_box">
+<div class="box">
     <form method="POST" action="{{url_for('teacher_add_question')}}">
                 {{ form_reg.hidden_tag() }}
         <div class="textbox">
@@ -23,7 +23,7 @@
         </div>
         <input class="submit_buttons" type="submit" value="Добавить">
     </form>
-    <div class="buttons">
+    <div class="back_buttons">
         <a href="./logout"><input type="button" value="Выйти"></a>
     </div>
 </div>
