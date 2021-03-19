@@ -533,7 +533,7 @@ class QuestionsListResource(Resource):
 
         session = db_session.create_session()
         question = Question(
-            group_id=args['module'],
+            module=args['module'],
             teacher_id=args['teacher_id'],
             description=args['description'],
             correct_answer=args['correct_answer'],

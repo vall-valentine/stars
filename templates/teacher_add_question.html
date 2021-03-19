@@ -11,9 +11,9 @@
     <form method="POST" action="{{url_for('teacher_add_question')}}">
                 {{ form_reg.hidden_tag() }}
         <div class="textbox">
-            <input type="text" name="module_number" placeholder="Номер модуля"><br>
-            <textarea name="question_content" placeholder="Содержание вопроса"></textarea><br>
-            <input type="text" name="right_answer" placeholder="Правильный ответ">
+            <input type="text" name="module" placeholder="Номер модуля"><br>
+            <textarea name="description" placeholder="Содержание вопроса"></textarea><br>
+            <input type="text" name="correct_answer" placeholder="Правильный ответ">
             <input type="text" name="wrong_answer1" placeholder="Неправильный ответ"><br>
             <input type="text" name="wrong_answer2" placeholder="Неправильный ответ">
             <input type="text" name="wrong_answer3" placeholder="Неправильный ответ">
