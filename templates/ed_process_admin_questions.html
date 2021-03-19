@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
-    <title>Запланированные тесты</title>
+    <title>Задания</title>
 </head>
 <body>
-    <div class="tests_box">
-        <div class="tests">
-            {% for test in tests %}
-            <div class="test">
-                <p>{{test_name}}</p>
+    <div class="questions_box">
+        <div class="questions">
+            {% for question in questions %}
+            <div class="question">
+                <p>{{question}}</p>
             </div>
             {% endfor %}
         </div>
