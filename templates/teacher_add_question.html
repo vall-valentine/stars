@@ -8,14 +8,15 @@
 <body>
 <h1>Новый вопрос</h1>
 <div class="question_box">
-    <form method="POST">
+    <form method="POST" action="{{url_for('system_admin_new_user')}}">
+                {{ form_reg.hidden_tag() }}
         <div class="textbox">
-            <input type="text" placeholder="Номер модуля"><br>
-            <textarea placeholder="Содержание вопроса"></textarea><br>
-            <input type="text" placeholder="Правильный ответ">
-            <input type="text" placeholder="Неправильный ответ"><br>
-            <input type="text" placeholder="Неправильный ответ">
-            <input type="text" placeholder="Неправильный ответ">
+            <input type="text" name="module_number" placeholder="Номер модуля"><br>
+            <textarea name="question_content" placeholder="Содержание вопроса"></textarea><br>
+            <input type="text" name="right_answer" placeholder="Правильный ответ">
+            <input type="text" name="wrong_answer1" placeholder="Неправильный ответ"><br>
+            <input type="text" name="wrong_answer2" placeholder="Неправильный ответ">
+            <input type="text" name="wrong_answer3" placeholder="Неправильный ответ">
         </div>
         <div class="question_error">
             {{error}}

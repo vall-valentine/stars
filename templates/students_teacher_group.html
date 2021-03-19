@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+    <title>Students</title>
+</head>
+<body>
+    <div class="students_box">
+        <h1>Ученики</h1>
+        <div class="students">
+            {% for student in students %}
+            <div class="students" onclick="redirect()">
+                <p>{{surname}} {{name}} - {{login}}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="back_button">
+            <a href="./logout"><input type="button" value="Выйти"></a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test options</title>
+</head>
+<body>
+    <div class="test_options_box">
+        <h1>Создание теста</h1>
+        <div class="options_box">
+            <form method="POST" action="{{url_for('login')}}">
+                {{ form_log.hidden_tag() }}
+            <div class="textbox">
+                <input type="text" name="group_name" placeholder="Название группы"><br>
+                <input type="datetime-local" name="test_datetime" placeholder="Пароль"><br>
+                <input type="text" name="questions_number" placeholder="Количество вопросов в тесте"><br>
+                <input type="text" name="modules_number" placeholder="Количество модулей"><br>
+                <input type="text" name="que_mod_numb" placeholder="Количество вопросов из модуля">
+            </div>
+            <div class="test_error">
+                {{error}}
+            </div>
+                <button class="submit_buttons" type="submit" value="Создать"></button>
+            </form>
+            <div class="buttons">
+                <a href="./logout"><input type="button" value="Выйти"></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

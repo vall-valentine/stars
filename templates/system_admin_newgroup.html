@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+    <title>New group</title>
+</head>
+<body>
+<h1>Новая группа</h1>
+<div class="new_group_box">
+    <form method="POST" action="{{url_for('system_admin_new_user')}}">
+                {{ form_reg.hidden_tag() }}
+        <div class="textbox">
+            <input type="text" name="group_name" placeholder="Название группы"><br>
+            <input type="text" name="teacher_login" placeholder="Логин учителя группы"><br>
+            <textarea name="students_logins" placeholder="Логины учеников группы через Enter"></textarea>
+        </div>
+        <div class="group_error">
+            {{error}}
+        </div>
+        <input class="submit_buttons" type="submit" value="Добавить">
+    </form>
+    <div class="buttons">
+        <a href="./logout"><input type="button" value="Выйти"></a>
+    </div>
+</div>
+</body>
+</html>

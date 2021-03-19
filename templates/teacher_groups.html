@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+    <title>My groups</title>
+</head>
+<body>
+    <div class="groups_box">
+        <h1>Группы</h1>
+        <div class="groups">
+            {% for group in groups %}
+            <div class="group" onclick="redirect()">
+                <p>{{group_name}}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="back_button">
+            <a href="./logout"><input type="button" value="Выйти"></a>
+        </div>
+    </div>
+</body>
+</html>
