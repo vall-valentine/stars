@@ -206,7 +206,7 @@ def teacher_groups_students(group_id):
     for grs in grstudents:
         students.append(session.query(Users).filter(Users.id == grs.student_id).first())
 
-    return render_template('teacher_students_group.html', students=students)
+    return render_template('teacher_students_group.html', students=students, group_id=group_id)
 
 
 # список результатов учеников определенной группы учителя
@@ -230,15 +230,56 @@ def teacher_students_results(group_id):
 
 
 # добавление вопросов учителем
-@app.route('/teacher/add_question', methods=['GET'])
+@app.route('/teacher/add_question', methods=['GET', 'POST'])
 def teacher_add_question():
-    return render_template('teacher_add_question.html')
+    form_reg = QuestionRegisterForm()
+    if form_reg.validate_on_submit():
+        post('http://127.0.0.1:8080//api/questions', json={"module": form_reg.module.data, "teacher_id": current_user.id,
+                                                           "description": form_reg.description.data,
+                                                           "correct_answer": form_reg.correct_answer.data,
+                                                           "wrong_answer1": form_reg.wrong_answer1.data,
+                                                           "wrong_answer2": form_reg.wrong_answer2.data,
+                                                           "wrong_answer3": form_reg.wrong_answer3.data})
+        return redirect('/')
+    return render_template('teacher_add_question.html', form_reg=form_reg)
 
 
 # задание параметров теста учителем
-@app.route('/teacher/test_options', methods=['GET'])
+@app.route('/teacher/test_options', methods=['GET', 'POST'])
 def teacher_test_options():
-    return render_template('teacher_test_options.html')
+    form = TestRegisterForm()
+    if form.is_submitted():
+        module = int(form.num_modules.data)
+        num_q_m = int(form.num_module_questions.data)
+        num_q = int(form.num_questions.data)
+
+        db_session.global_init("db/database.sqlite")
+        session = db_session.create_session()
+
+        tests = Tests(
+            group_id=int(form.group_id.data),
+            teacher_id=current_user.id,
+            start_date=form.date.data
+        )
+        session.add(tests)
+        session.commit()
+
+        questions = []
+        for m in range(1, int(module) + 1):
+            qu = session.query(Questions).filter(Questions.module == m).all()
+            shuffle(qu)
+            questions.extend(qu[:num_q])
+        questions = questions[:num_q_m]
+
+        test = session.query(Tests).filter(Tests.teacher_id == current_user.id).all()[-1]
+
+        for q in questions:
+            print(test.id)
+            post('http://127.0.0.1:8080//api/testquestions', json={'test_id': test.id,
+                                                                   'question_id': q.id})
+        return redirect('/')
+
+    return render_template('test_options.html', form=form)
 
 
 # страница системного администратора
@@ -261,7 +302,7 @@ def system_admin_new_group():
         group = session.query(Groups)[-1]
 
         teacher = session.query(Users).filter(Users.login == form_reg.teacher.data).first()
-        print(form_reg.teacher.data, form_reg.name.data, form_reg.students.data)
+
         post('http://127.0.0.1:8080//api/teachergroups', json={"teacher_id": teacher.id,
                                                                "group_id": group.id})
 

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
     <title>Создание теста</title>
 </head>
 <body>
@@ -9,13 +10,13 @@
 <div class="box">
     <div class="options_box">
         <form method="POST" action="{{url_for('teacher_test_options')}}">
-            {{ form_log.hidden_tag() }}
+            {{ form.hidden_tag() }}
             <div class="textbox">
-                <input type="text" name="group_name" placeholder="Название группы"><br>
-                <input type="date" name="test_datetime" placeholder="Дата"><br>
-                <input type="text" name="questions_number" placeholder="Количество вопросов в тесте"><br>
-                <input type="text" name="modules_number" placeholder="Количество модулей"><br>
-                <input type="text" name="que_mod_numb" placeholder="Количество вопросов из модуля">
+                <input type="text" name="group_id" placeholder="Номер группы"><br>
+                <input type="date" name="date" placeholder="Дата"><br>
+                <input type="text" name="num_questions" placeholder="Количество вопросов в тесте"><br>
+                <input type="text" name="num_modules" placeholder="Количество модулей"><br>
+                <input type="text" name="num_module_questions" placeholder="Количество вопросов из модуля">
             </div>
             <div class="test_error">
                 {{error}}
