@@ -6,20 +6,21 @@
     <title>Students results</title>
 </head>
 <body>
-<h1>Результат группы {{name}}</h1>
-<h3>Учитель: {{surname}} {{name}}</h3>
+<h1>Результат группы {{group.name}}</h1>
 <div class="results_box">
     <table>
         <tr>
+            <th>Тест</th>
             <th>Ученик</th>
-            <th>Результат %</th>
+            <th>Результат</th>
             <th>Оценка</th>
         </tr>
-        {% for student in students %}
+        {% for stres in results %}
         <tr>
-            <td>{{student.surname}} {{student.name}}</td>
-            <td>{{result}}</td>
-            <td>{{mark}}</td>
+            <td>{{stres[0].test_id}}</td>
+            <td>{{stres[1].surname}} {{stres[1].name}}</td>
+            <td>{{stres[0].result}}</td>
+            <td>{{stres[0].mark}}</td>
         </tr>
         {% endfor %}
     </table>

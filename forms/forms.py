@@ -13,7 +13,7 @@ class UserRegisterForm(FlaskForm):
 
 class GroupRegisterForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
-    teacher = IntegerField('Teacher ID', validators=[DataRequired()])
+    teacher = StringField('Teacher', validators=[DataRequired()])
     students = TextAreaField('Students', validators=[DataRequired()])
 
 

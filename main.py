@@ -150,18 +150,19 @@ def student_certain_test(test_id):
             if answers[count] == correct_answers[count]:
                 result += 1
 
-        if result // len_q * 100 > 85:
-            mark = 5
-        elif result // len_q * 100 > 70:
-            mark = 4
-        elif result // len_q * 100 > 50:
-            mark = 3
-        else:
-            mark = 2
+        if len_q != 0:
+            if result // len_q * 100 > 85:
+                mark = 5
+            elif result // len_q * 100 > 70:
+                mark = 4
+            elif result // len_q * 100 > 50:
+                mark = 3
+            else:
+                mark = 2
 
-        post('http://127.0.0.1:8080//api/testresults', json={"test_id": test.id, "student_id": current_user.id,
+            post('http://127.0.0.1:8080//api/testresults', json={"test_id": test.id, "student_id": current_user.id,
                                                              "result": result, "mark": mark})
-        return redirect('/')
+        return redirect('/student/results')
 
     return render_template('test.html', test=test, questions=questions, shuffle=shuffle, len_q=len_q, form=form)
 
@@ -184,19 +185,48 @@ def start_teacher():
 # группы учителя
 @app.route('/teacher/groups', methods=['GET'])
 def teacher_groups():
-    return render_template('teacher_groups.html')
+    db_session.global_init("db/database.sqlite")
+    session = db_session.create_session()
+    teachgroups = session.query(TeacherGroups).filter(TeacherGroups.teacher_id == current_user.id).all()
+    groups = []
+    for tg in teachgroups:
+        groups.append(session.query(Groups).filter(Groups.id == tg.group_id).first())
+
+    return render_template('teacher_groups.html', groups=groups)
 
 
 # список учеников опрделенной группы учителя
-@app.route('/teacher/groups/<group>', methods=['GET'])
-def teacher_groups_students(group):
-    return
+@app.route('/teacher/groups/<int:group_id>', methods=['GET'])
+def teacher_groups_students(group_id):
+    db_session.global_init("db/database.sqlite")
+    session = db_session.create_session()
+    grstudents = session.query(GroupStudents).filter(GroupStudents.group_id == group_id).all()
+
+    students = []
+    for grs in grstudents:
+        students.append(session.query(Users).filter(Users.id == grs.student_id).first())
+
+    return render_template('teacher_students_group.html', students=students)
 
 
 # список результатов учеников определенной группы учителя
-@app.route('/teacher/groups/<group>/results', methods=['GET'])
-def teacher_students_results(group):
-    return render_template('test_results.html')
+@app.route('/teacher/groups/<int:group_id>/results', methods=['GET'])
+def teacher_students_results(group_id):
+    db_session.global_init("db/database.sqlite")
+    session = db_session.create_session()
+
+    group = session.query(Groups).filter(Groups.id == group_id).all()
+
+    tests = session.query(Tests).filter(Tests.group_id == group_id).all()
+
+    results = []
+    for test in tests:
+        res = session.query(TestResults).filter(TestResults.test_id == test.id).all()
+        for r in res:
+            student = session.query(Users).filter(Users.id == r.student_id).first()
+            results.append([r, student])
+
+    return render_template('test_results.html', results=results, group=group)
 
 
 # добавление вопросов учителем
@@ -220,7 +250,30 @@ def start_system_admin():
 # создание группы учеников системным администратором
 @app.route('/system_admin/new_group', methods=['GET', 'POST'])
 def system_admin_new_group():
-    return render_template('system_admin_newgroup.html')
+    form_reg = GroupRegisterForm()
+
+    if form_reg.is_submitted():
+        db_session.global_init("db/database.sqlite")
+        session = db_session.create_session()
+
+        post('http://127.0.0.1:8080//api/groups', json={"name": form_reg.name.data})
+
+        group = session.query(Groups)[-1]
+
+        teacher = session.query(Users).filter(Users.login == form_reg.teacher.data).first()
+        print(form_reg.teacher.data, form_reg.name.data, form_reg.students.data)
+        post('http://127.0.0.1:8080//api/teachergroups', json={"teacher_id": teacher.id,
+                                                               "group_id": group.id})
+
+        students = form_reg.students.data.split()
+        for student in students:
+            st = session.query(Users).filter(Users.login == student).first()
+            post('http://127.0.0.1:8080//api/groupstudents', json={"group_id": group.id,
+                                                                   "student_id": st.id})
+
+        return redirect('/')
+
+    return render_template('system_admin_newgroup.html', form_reg=form_reg)
 
 
 # регистрация нового пользователя системным администратором
@@ -241,11 +294,6 @@ def system_admin_new_user():
                                                        "hashed_password": form_reg.password.data})
 
         return redirect('/')
-    else:
-        print({"name": form_reg.name.data, "login": form_reg.login.data,
-                                                       "surname": form_reg.surname.data,
-                                                       "role_id": form_reg.role_id.data,
-                                                       "hashed_password": form_reg.password.data})
     return render_template('system_admin_newuser.html', form_reg=form_reg)
 
 
