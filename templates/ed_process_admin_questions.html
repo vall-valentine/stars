@@ -11,7 +11,13 @@
     <div class="questions">
         {% for question in questions %}
         <div class="question">
-            <p>{{ question }}</p>
+            <p>Вопрос: {{ question.description }} (модуль: {{ question.module }})</p>
+            <ul>
+                <li>Правильный ответ: {{ question.correct_answer }}</li>
+                <li>{{ question.wrong_answer1 }}</li>
+                <li>{{ question.wrong_answer2 }}</li>
+                <li>{{ question.wrong_answer3 }}</li>
+            </ul>
         </div>
         {% endfor %}
     </div>

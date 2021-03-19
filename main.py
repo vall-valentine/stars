@@ -414,7 +414,11 @@ def ed_process_admin_planned_tests():
 # просмотр заданий администратором учебного процесса
 @app.route('/ed_process_admin/questions', methods=['GET'])
 def ed_process_admin_questions():
-    return render_template('ed_process_admin_questions.html')
+    db_session.global_init("db/database.sqlite")
+    session = db_session.create_session()
+
+    questions = session.query(Questions).all()
+    return render_template('ed_process_admin_questions.html', questions=questions)
 
 
 if __name__ == '__main__':
