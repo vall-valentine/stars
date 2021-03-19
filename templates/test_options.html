@@ -8,7 +8,7 @@
     <div class="test_options_box">
         <h1>Создание теста</h1>
         <div class="options_box">
-            <form method="POST" action="{{url_for('login')}}">
+            <form method="POST" action="{{url_for('teacher_test_options')}}">
                 {{ form_log.hidden_tag() }}
             <div class="textbox">
                 <input type="text" name="group_name" placeholder="Название группы"><br>

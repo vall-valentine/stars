@@ -8,7 +8,7 @@
 <body>
 <h1>Новая группа</h1>
 <div class="new_group_box">
-    <form method="POST" action="{{url_for('system_admin_new_user')}}">
+    <form method="POST" action="{{url_for('system_admin_new_group')}}">
                 {{ form_reg.hidden_tag() }}
         <div class="textbox">
             <input type="text" name="group_name" placeholder="Название группы"><br>
