@@ -248,7 +248,7 @@ def teacher_add_question():
 @app.route('/teacher/test_options', methods=['GET', 'POST'])
 def teacher_test_options():
     form = TestRegisterForm()
-    if form.is_submitted():
+    if form.validate_on_submit():
         module = int(form.num_modules.data)
         num_q_m = int(form.num_module_questions.data)
         num_q = int(form.num_questions.data)
@@ -268,8 +268,8 @@ def teacher_test_options():
         for m in range(1, int(module) + 1):
             qu = session.query(Questions).filter(Questions.module == m).all()
             shuffle(qu)
-            questions.extend(qu[:num_q])
-        questions = questions[:num_q_m]
+            questions.extend(qu[:num_q_m])
+        questions = questions[:num_q]
 
         test = session.query(Tests).filter(Tests.teacher_id == current_user.id).all()[-1]
 
@@ -347,31 +347,68 @@ def start_ed_process_admin():
 # просмотр учителей администратором учебного процесса
 @app.route('/ed_process_admin/teachers', methods=['GET'])
 def ed_process_admin_teachers():
-    return render_template('ed_process_admin_teachers.html')
+    db_session.global_init("db/database.sqlite")
+    session = db_session.create_session()
+
+    teachers = session.query(Users).filter(Users.role_id == 3).all()
+    return render_template('ed_process_admin_teachers.html', teachers=teachers)
 
 
 # просмотр группы учителя администратором учебного процесса
-@app.route('/ed_process_admin/teachers/<group>', methods=['GET'])
-def ed_process_admin_teachergroup(group):
-    return render_template('ed_process_admin_teachergroup.html')
+@app.route('/ed_process_admin/teachers/<int:teacher_id>', methods=['GET'])
+def ed_process_admin_teachergroup(teacher_id):
+    db_session.global_init("db/database.sqlite")
+    session = db_session.create_session()
+    teachgroups = session.query(TeacherGroups).filter(TeacherGroups.teacher_id == teacher_id).all()
+    groups = []
+    for tg in teachgroups:
+        groups.append(session.query(Groups).filter(Groups.id == tg.group_id).first())
+
+    return render_template('ed_process_admin_teachergroup.html', groups=groups, teacher_id=teacher_id)
+
+
+# просмотр группы учителя администратором учебного процесса
+@app.route('/ed_process_admin/teachers/<int:teacher_id>/groups/<int:group_id>', methods=['GET'])
+def ed_process_admin_one_teachergroup(teacher_id, group_id):
+    db_session.global_init("db/database.sqlite")
+    session = db_session.create_session()
+    grstudents = session.query(GroupStudents).filter(GroupStudents.group_id == group_id).all()
+
+    students = []
+    for grs in grstudents:
+        students.append(session.query(Users).filter(Users.id == grs.student_id).first())
+
+    return render_template('ed_process_admin_one_teachergroup.html', students=students, group_id=group_id)
+
+
+# просмотр группы учителя администратором учебного процесса
+@app.route('/ed_process_admin/teachers/<int:teacher_id>/groups/<int:group_id>/results', methods=['GET'])
+def ed_process_admin_one_teachergroup_result(teacher_id, group_id):
+    db_session.global_init("db/database.sqlite")
+    session = db_session.create_session()
+
+    group = session.query(Groups).filter(Groups.id == group_id).all()
+
+    tests = session.query(Tests).filter(Tests.group_id == group_id).all()
+
+    results = []
+    for test in tests:
+        res = session.query(TestResults).filter(TestResults.test_id == test.id).all()
+        for r in res:
+            student = session.query(Users).filter(Users.id == r.student_id).first()
+            results.append([r, student])
+
+    return render_template('ed_process_admin_one_teachergroup_results.html', results=results, group=group)
 
 
 # просмотр запланированных тестов администратором учебного процесса
-@app.route('/ed_process_admin/planned_tests', methods=['GET'])
+@app.route('/ed_process_admin/tests', methods=['GET'])
 def ed_process_admin_planned_tests():
-    return render_template('ed_process_admin_plannedtests.html')
+    db_session.global_init("db/database.sqlite")
+    session = db_session.create_session()
 
-
-# просмотр проведенных тестов администратором учебного процесса
-@app.route('/ed_process_admin/finished_tests', methods=['GET'])
-def ed_process_admin_finished_tests():
-    return render_template('ed_process_admin_finishedtests.html')
-
-
-# просмотр результатов проведенных тестов администратором учебного процесса
-@app.route('/ed_process_admin/finished_tests/<test>', methods=['GET'])
-def ed_process_admin_results(test):
-    return render_template('test_results.html')
+    tests = session.query(Tests).all()
+    return render_template('ed_process_admin_tests.html', tests=tests)
 
 
 # просмотр заданий администратором учебного процесса

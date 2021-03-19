@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
-    <title>Проведенные тесты</title>
+    <title>Запланированные тесты</title>
 </head>
 <body>
-<h1>Проведенные тесты</h1>
+<h1>Запланированные тесты</h1>
 <div class="box">
-    <div class="tests" onclick="redirect()">
+    <div class="tests">
         {% for test in tests %}
         <div class="test">
-            <p>{{ test_name }}</p>
+            <p>Начало: {{ test.start_date }}
+            Учитель: {{ test.teacher_id }}</p>
+
         </div>
         {% endfor %}
     </div>

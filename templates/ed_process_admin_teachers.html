@@ -11,11 +11,11 @@
     <div class="teachers">
         {% for teacher in teachers %}
         <div class="teacher" onclick="redirect()">
-            <p>{{ surname }} {{ name }} - {{ login }}</p>
+            <a href="./teachers/{{teacher.id}}"><input class="buttons" type="button" value="{{ teacher.surname }} {{ teacher.name }} - {{ teacher.login }}"></a><br>
         </div>
         {% endfor %}
     </div>
-    <a href="./logout"><input class="back_button" type="button" value="Выйти"></a>
+    <a href="../logout"><input class="back_button" type="button" value="Выйти"></a>
 </div>
 </body>
 </html>

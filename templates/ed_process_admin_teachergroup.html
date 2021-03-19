@@ -2,15 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Группы преподавателя</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+    <title>Группы</title>
 </head>
 <body>
-<h1>{{ surname }} {{ name }}</h1>
+<h1>Группы</h1>
 <div class="box">
     <div class="groups">
         {% for group in groups %}
-        <div class="group">
-            <p>{{ name }}</p>
+        <div class="group" onclick="redirect()">
+            <p><a href="./{{teacher_id}}/groups/{{group.id}}">{{group.name}}</a></p>
         </div>
         {% endfor %}
     </div>

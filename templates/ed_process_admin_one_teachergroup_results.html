@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+    <title>Students results</title>
+</head>
+<body>
+<h1>Результат группы {{group.name}}</h1>
+<div class="box">
+    <table>
+        <tr>
+            <th>Тест</th>
+            <th>Ученик</th>
+            <th>Результат</th>
+            <th>Оценка</th>
+        </tr>
+        {% for stres in results %}
+        <tr>
+            <td>{{stres[0].test_id}}</td>
+            <td>{{stres[1].surname}} {{stres[1].name}}</td>
+            <td>{{stres[0].result}}</td>
+            <td>{{stres[0].mark}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="./logout"><input class="back_button" type="button" value="Выйти"></a>
+</div>
+</body>
+</html>

@@ -11,7 +11,7 @@
     <div class="tests" onclick="redirect()">
         {% for test in tests %}
         <div class="test" onclick="redirect()">
-            <p>Начало {{test.start_date}}</p>
+            <a href="./tests/{{test.id}}"><input class="buttons" type="button" value="Начало {{test.start_date}}"></a><br>
         </div>
         {% endfor %}
     </div>
